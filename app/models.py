@@ -14,7 +14,7 @@ class Stops(db.Model):
         self.longitude_map = longitude_map
 
     def __repr__(self):
-        return f"{self.name_stop}:{self.width_map}:{self.longitude_map}"
+        return f"<profiles {self.id}>"
 
 
 class Routes(db.Model):
@@ -33,7 +33,7 @@ class Routes(db.Model):
         self.count_stops = count_stops
 
     def __repr__(self):
-        return f"{self.start_stop}:{self.finish_stop}:{self.count_minibus}:{self.count_stops}"
+        return f"<profiles {self.route_id}>"
 
 class StopRoute(db.Model):
     __tablename__ = 'stoproute'
@@ -47,4 +47,4 @@ class StopRoute(db.Model):
         self.stop_id = stop_id
 
     def __repr__(self):
-        return f"{self.route_id}:{self.stop_id}"
+        return f"<profiles {self.id}>"
