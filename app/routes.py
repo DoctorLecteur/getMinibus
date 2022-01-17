@@ -17,7 +17,8 @@ def get_route_stops():
     if request.method == 'POST':
         stops_name = []
         try:
-            routes = models.Routes.query.filter_by(route_id = request.form.get('routeId')).all()
+            routeId = request.get_json()['routeId'];
+            routes = models.Routes.query.filter_by(route_id = routeId).all()
             for i in range(0, len(routes), 1):
                 start_stop = models.Stops.query.filter_by(id = routes[i].start_stop).all()[0].name_stop
                 finish_stop = models.Stops.query.filter_by(id=routes[i].finish_stop).all()[0].name_stop

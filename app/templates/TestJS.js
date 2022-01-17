@@ -5,7 +5,7 @@ function getStops() {
     if (nRouteId) {
 
         const answer = doHttpRequest(nRouteId);
-
+        console.log('answer', answer);
         if (answer['httpcode'] === 200) {
 
             alert(answer['stops']);
@@ -21,39 +21,24 @@ function getStops() {
 
 }
 
-function doHttpRequest(nRouteId) {
+async function doHttpRequest(nRouteId) {
 
-    let xmlHttpRequest = function() {
-        return new Promise(function(resolve, reject) {
+    const route = {
+        routeId: nRouteId
+    }
 
-            const request = new XMLHttpRequest();
-            const URL = 'http://127.0.0.1:5000/stops';
+    const URL = 'http://127.0.0.1:5000/stops';
 
-            const formData = new FormData();
-            formData.append("routeId", nRouteId);
-
-            request.open("POST", URL, true);
-            let text='empty';
-
-            request.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    text = this.responseText;
-                    resolve(text);
-                } else {
-                    reject(new Error('Error')); // Обработка ошибки
-                }
-            };
-
-            request.send(formData);
-
-        });
-    };
-
-    xmlHttpRequest()
-    .then(function(text){
-        console.log(text);
-    }).catch(function(err){
-        console.error(err);
+    const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(route)
     });
 
+    const result = await response.json();
+    console.log('result', result['httpcode']);
+
+    return result;
 }
