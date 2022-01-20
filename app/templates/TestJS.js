@@ -1,3 +1,16 @@
+function doShowStops(objAnswer) {
+
+    if (objAnswer['httpcode'] === 200) {
+
+        alert('Остановки - ' + objAnswer['stops']);
+        document.getElementById("RouteId").value = "";
+
+    } else {
+        alert("Неудачный запрос на сервер");
+    }
+
+}
+
 function getStops() {
 
     const nRouteId = document.getElementById("RouteId").value;
@@ -5,15 +18,9 @@ function getStops() {
     if (nRouteId) {
 
         const answer = doHttpRequest(nRouteId);
-        console.log('answer', answer);
-        if (answer['httpcode'] === 200) {
-
-            alert(answer['stops']);
-            document.getElementById("RouteId").value = "";
-
-        } else {
-            alert("Неудачный запрос на сервер");
-        }
+        answer.then(
+            result => doShowStops(result)
+        );
 
     } else {
         alert("Введите номер маршрута");
@@ -32,13 +39,13 @@ async function doHttpRequest(nRouteId) {
     const response = await fetch(URL, {
         method: 'POST',
         headers: {
+            'Access-Control-Request-Method': 'POST',
             'Content-type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(route)
     });
 
     const result = await response.json();
-    console.log('result', result['httpcode']);
 
     return result;
 }
