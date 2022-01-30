@@ -7,11 +7,13 @@ class Stops(db.Model):
     name_stop = db.Column(db.String(256))
     width_map = db.Column(db.Float)
     longitude_map = db.Column(db.Float)
+    direction = db.Column(db.String(32))
 
-    def __init__(self, name_stop, width_map, longitude_map):
+    def __init__(self, name_stop, width_map, longitude_map, direction):
         self.name_stop = name_stop
         self.width_map = width_map
         self.longitude_map = longitude_map
+        self.direction = direction
 
     def __repr__(self):
         return f"<profiles {self.id}>"
@@ -48,3 +50,22 @@ class StopRoute(db.Model):
 
     def __repr__(self):
         return f"<profiles {self.id}>"
+
+class Users(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(64))
+    password = db.Column(db.String(256))
+    save_route_id = db.Column(db.Integer, db.ForeignKey('routes.route_id'))
+    save_stop_id = db.Column(db.Integer, db.ForeignKey('stops.id'))
+
+    def __init__(self, login, password, save_route_id, save_stop_id):
+        self.login = login
+        self.password = password
+        self.save_route_id = save_route_id
+        self.save_stop_id = save_stop_id
+
+    def __repr__(self):
+        return f"<profiles {self.id}>"
+
